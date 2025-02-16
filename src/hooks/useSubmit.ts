@@ -132,7 +132,8 @@ const useSubmit = () => {
               JSON.stringify(useStore.getState().chats)
             );
             const updatedMessages = updatedChats[currentChatIndex].messages;
-            updatedMessages[updatedMessages.length - 1].content += resultString;
+            updatedMessages[updatedMessages.length - 1].content += resultString || partial;
+            partial = '';
             setChats(updatedChats);
           }
         }
