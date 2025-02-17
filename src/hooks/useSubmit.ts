@@ -119,14 +119,17 @@ const useSubmit = () => {
             reading = false;
           } else {
             const resultString = result.reduce((output: string, curr) => {
-              if (typeof curr === 'string') {
-                partial += curr;
+              console.log("curr", curr);
+              if (typeof curr === 'string' || typeof curr === 'number') {
+                partial += `${curr}`;
               } else {
                 const content = curr.choices[0]?.delta?.content ?? null;
                 if (content) output += content;
               }
               return output;
             }, '');
+
+            console.log("Partial", partial);
 
             const updatedChats: ChatInterface[] = JSON.parse(
               JSON.stringify(useStore.getState().chats)
