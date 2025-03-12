@@ -123,13 +123,11 @@ const useSubmit = () => {
               if (typeof curr === 'string' || typeof curr === 'number') {
                 partial += `${curr}`;
               } else {
-                const content = curr.choices[0]?.delta?.content ?? null;
+                const content = curr.content ?? null;
                 if (content) output += content;
               }
               return output;
             }, '');
-
-            console.log("Partial", partial);
 
             const updatedChats: ChatInterface[] = JSON.parse(
               JSON.stringify(useStore.getState().chats)
