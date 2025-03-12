@@ -4,6 +4,7 @@ export interface EventSourceDataInterface {
   id: string;
   model: string;
   object: string;
+  content: string;
 }
 
 export type EventSourceData = EventSourceDataInterface | '[DONE]';
