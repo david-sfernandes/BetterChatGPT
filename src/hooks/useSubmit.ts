@@ -1,12 +1,11 @@
-import React from 'react';
-import useStore from '@store/store';
-import { useTranslation } from 'react-i18next';
-import { ChatInterface, MessageInterface } from '@type/chat';
 import { getChatCompletion, getChatCompletionStream } from '@api/api';
 import { parseEventSource } from '@api/helper';
-import { limitMessageTokens, updateTotalTokenUsed } from '@utils/messageUtils';
-import { _defaultChatConfig } from '@constants/chat';
 import { officialAPIEndpoint } from '@constants/auth';
+import { _defaultChatConfig } from '@constants/chat';
+import useStore from '@store/store';
+import { ChatInterface, MessageInterface } from '@type/chat';
+import { limitMessageTokens, updateTotalTokenUsed } from '@utils/messageUtils';
+import { useTranslation } from 'react-i18next';
 
 const useSubmit = () => {
   const { t, i18n } = useTranslation('api');
@@ -119,11 +118,14 @@ const useSubmit = () => {
             reading = false;
           } else {
             const resultString = result.reduce((output: string, curr) => {
-              console.log("curr", curr);
               if (typeof curr === 'string' || typeof curr === 'number') {
-                partial += `${curr}`;
+                `${curr}`.split(/"}/gm).map((item) => {
+                  if (item.length === 0) return;
+                  const json = JSON.parse(item + '"}');
+                  partial += `${json.content ?? ''}`;
+                });
               } else {
-                const content = curr.content ?? null;
+                const content = curr.content ?? '';
                 if (content) output += content;
               }
               return output;
